@@ -1,0 +1,275 @@
+//#include <GL/glut.h>
+//#include <cmath>
+//
+//void midpointEllipse(int xc, int yc, int a, int b)
+//{
+//    int x = 0, y = b;
+//    int a2 = a * a, b2 = b * b;
+//    int d = b2 - a2 * (2 * b - 1);
+//
+//    while (y >= 0)
+//    {
+//        glBegin(GL_POINTS);
+//        glVertex2i(xc + x, yc + y);
+//        glVertex2i(xc - x, yc + y);
+//        glVertex2i(xc + x, yc - y);
+//        glVertex2i(xc - x, yc - y);
+//        glEnd();
+//
+//        if (d > 0)
+//        {
+//            y--;
+//            d -= 2 * a2 * y;
+//        }
+//
+//        x++;
+//        d += 2 * b2 * x + b2;
+//
+//        if (y == 0 && x <= a)
+//        {
+//            glBegin(GL_POINTS);
+//            glVertex2i(xc + x, yc);
+//            glVertex2i(xc - x, yc);
+//            glEnd();
+//        }
+//    }
+//}
+//void display()
+//{
+//    glClear(GL_COLOR_BUFFER_BIT);
+//    glColor3f(1.0, 1.0, 1.0);
+//    //bresenhamCircle(250, 250, 200);
+//    //midpointCircle(250, 250, 200);
+//    midpointEllipse(250, 250, 200, 100);
+//    glFlush();
+//}
+//
+//int main(int argc, char** argv)
+//{
+//    glutInit(&argc, argv);
+//    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+//    glutInitWindowSize(500, 500);
+//    glutInitWindowPosition(100, 100);
+//    glutCreateWindow("Mid-Point Ellipse Drawing Algorithm");
+//    glClearColor(0.0, 0.0, 0.0, 0.0);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    gluOrtho2D(0, 500, 0, 500);
+//    glutDisplayFunc(display);
+//    glutMainLoop();
+//    return 0;
+//}
+
+//#include <GL/glut.h>
+//#include<iostream>
+//using namespace std;
+//int rx, ry;//semi-Major axis & semi Minor Axis
+//int xCenter, yCenter;//center of ellipse
+//void myinit(void)
+//{
+//    glClearColor(1.0, 1.0, 1.0, 0.0);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    gluOrtho2D(0.0, 640.0, 0.0, 480.0);
+//}
+//void setPixel(GLint x, GLint y)
+//{
+//    glBegin(GL_POINTS);
+//    glVertex2i(x, y);
+//    glEnd();
+//}
+//
+//void ellipseMidPoint()
+//{
+//    //int xCenter = 250;
+//    //int yCenter = 300;
+//    //int rx = 200;
+//    //int ry = 200;
+//
+//    //plotting for 1st region of 1st quardant and the slope will be < -1
+//     //----------------------Region-1------------------------//
+//    float x = 0;
+//    float y = ry;//(0,ry) ---
+//    float p1 = ry * ry - (rx * rx) * ry + (rx * rx) * (0.25);
+//    //slope
+//    float dx = 2 * (ry * ry) * x;
+//    float dy = 2 * (rx * rx) * y;
+//    while (dx < dy)
+//    {
+//        //plot (x,y)
+//        setPixel(xCenter + x, yCenter + y);
+//        setPixel(xCenter - x, yCenter + y);
+//        setPixel(xCenter + x, yCenter - y);
+//        setPixel(xCenter - x, yCenter - y);
+//        if (p1 < 0)
+//        {
+//            x = x + 1;
+//            dx = 2 * (ry * ry) * x;
+//            p1 = p1 + dx + (ry * ry);
+//        }
+//        else
+//        {
+//            x = x + 1;
+//            y = y - 1;
+//            dx = 2 * (ry * ry) * x;
+//            dy = 2 * (rx * rx) * y;
+//            p1 = p1 + dx - dy + (ry * ry);
+//        }
+//    }
+//    //ploting for 2nd region of 1st quardant and the slope will be > -1
+//     //----------------------Region-2------------------------//
+//    float p2 = (ry * ry) * (x + 0.5) * (x + 0.5) + (rx * rx) * (y - 1) * (y - 1) - (rx * rx) * (ry * ry);
+//
+//
+//    while (y > 0)
+//    {
+//        //plot (x,y)
+//        setPixel(xCenter + x, yCenter + y);
+//        setPixel(xCenter - x, yCenter + y);
+//        setPixel(xCenter + x, yCenter - y);
+//        setPixel(xCenter - x, yCenter - y);     //glEnd();
+//        if (p2 > 0)
+//        {
+//            x = x;
+//            y = y - 1;
+//            dy = 2 * (rx * rx) * y;
+//            //dy = 2 * rx * rx *y;
+//            p2 = p2 - dy + (rx * rx);
+//        }
+//        else
+//        {
+//            x = x + 1;
+//            y = y - 1;
+//            dy = dy - 2 * (rx * rx);
+//            dx = dx + 2 * (ry * ry);
+//            p2 = p2 + dx -
+//                dy + (rx * rx);
+//        }
+//    }
+//
+//}
+//void display()
+//{
+//    glClear(GL_COLOR_BUFFER_BIT);     // clear the screen
+//    glColor3f(1.0, 0.0, 0.0);          // red foreground
+//    glPointSize(2.0);               // size of points to be drawin (in pixel)
+//
+//    //establish a coordinate system for the image
+//
+//    ellipseMidPoint();
+//    glFlush(); // send all output to the display
+//}
+//
+//int main(int argc, char** argv)
+//{
+//    cout << "\n\nEnter Center Of Ellipse  \n\n";
+//    cout << "\n x = ";
+//    cin >> xCenter;
+//
+//    cout << "\n y = ";
+//    cin >> yCenter;
+//
+//    cout << " Enter a Semi Major Axix : ";
+//    cin >> rx;
+//    cout << " \nEnter a Semi Minor Axis: ";
+//    cin >> ry;
+//    glutInit(&argc, argv);
+//    glutInitWindowSize(640, 480); // set the size of the window
+//    glutInitWindowPosition(10, 10); // the position of the top-left of window
+//    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+//    glutCreateWindow("Midpoint Ellipse Drawing Algorithm");
+//    myinit();
+//    glutDisplayFunc(display); // set the gl display callback function
+//    glutMainLoop(); // enter the GL event loop
+//
+//}
+
+#include <gl/glut.h>  
+#include <iostream>
+using namespace std;
+int rx, ry;
+int xi, yi;
+
+void ellipseMidPoint() {
+	int x = 0, y = ry;
+	int p1 = (ry * ry) + (rx * rx * 0.25) - (ry * rx * rx);
+	int dx = 2 * x * (ry * ry);
+	int dy = 2 * y * (rx * rx);
+	while (dy > dx) {
+		glVertex2i(x + xi, y + yi);
+		glVertex2i(x + xi, -y + yi);
+		glVertex2i(-x + xi, -y + yi);
+		glVertex2i(-x + xi, y + yi);
+		if (p1 < 0) {
+			x++;
+			dx = 2 * x * (ry * ry);
+			p1 += dx + (ry * ry);
+		}
+		else {
+			x++;
+			y--;
+			dx = 2 * x * (ry * ry);
+			dy = 2 * y * (rx * rx);
+			p1 += dx + (ry * ry) - dy;
+		}
+	}
+	int p2 = (ry * ry * (x + 0.5) * (x + 0.5)) + (rx * rx * (y - 1) * (y - 1)) - (rx * rx * ry * ry);
+	while (y > 0) {
+		glVertex2i(x + xi, y + yi);
+		glVertex2i(x + xi, -y + yi);
+		glVertex2i(-x + xi, -y + yi);
+		glVertex2i(-x + xi, y + yi);
+		if (p2 > 0) {
+			y--;
+			dy = 2 * y * (rx * rx);
+			p2 += (rx * rx) - dy;
+		}
+		else {
+			y--;
+			x++;
+			dy -= 2 * (rx * rx);
+			dx += 2 * (ry * ry);
+			p2 += dx + (rx * rx) - dy;
+		}
+	}
+}
+
+void display() {
+	//glClear(GL_COLOR_BUFFER_BIT); already mentioned in main program
+	glColor3f(0.0, 1.0, 1.0);
+	glPointSize(5.0);
+	glBegin(GL_POINTS);
+	//int rx = 40, ry = 50, xi = 200, yi = 250;
+	ellipseMidPoint();
+	glEnd();
+	glFlush();
+}
+int main(int argc, char** argv)
+{
+	cout << "\n\nEnter Center Of Ellipse  \n\n";
+	cout << "\n x = ";
+	cin >> xi;
+	
+	cout << "\n y = ";
+	cin >> yi;
+	
+	cout << " Enter a Semi Major Axix : ";
+	cin >> rx;
+	cout << " \nEnter a Semi Minor Axis: ";
+	cin >> ry;
+
+
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowSize(500, 500);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("Drawing Algorithm");
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	gluOrtho2D(0, 500, 0, 500);
+	glMatrixMode(GL_PROJECTION);
+	glViewport(0, 0, 500, 500);
+	glutDisplayFunc(display);
+	glutMainLoop();
+	return 0;
+}
